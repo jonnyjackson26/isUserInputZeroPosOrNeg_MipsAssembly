@@ -1,0 +1,48 @@
+#Exercise 1 from class 10/9/24
+#user inputs an integer, program tells if it was 0, pos, or neg
+.data
+  inputPrompt: .asciiz "Enter an Integer: "
+  isNegMsg: .asciiz "Your inpur was negative"
+  isPosMsg: .asciiz "Your inpur was positive"
+  isZeroMsg: .asciiz "Your inpur was zero"
+  
+.text
+.globl main
+main: 
+#ask user to input integer
+li $v0, 4
+la $a0, inputPrompt
+syscall
+# read integer from user
+li $v0, 5
+syscall
+move $t0, $v0 #t0 is now user input
+
+
+slt $t1, $t0, $zero 
+#if t1=1, number is negative
+#if t1=0, number is not negative
+
+li $v0, 4 #becuase were gonna be printing strings regardless of condition
+
+li $t2, 1
+beq $t2, $t1, isNeg
+beq $zero, $t0, isZero
+j isPos
+
+isNeg:
+  la $a0, isNegMsg
+  syscall
+  j end
+isPos:
+  la $a0, isPosMsg
+  syscall
+  j end
+isZero:
+  la $a0, isZeroMsg
+  syscall
+  j end
+  
+end:
+  li $v0, 10
+  syscall
